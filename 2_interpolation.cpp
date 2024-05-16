@@ -1,5 +1,5 @@
 /*
-g++ due.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 2_interpolation.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
