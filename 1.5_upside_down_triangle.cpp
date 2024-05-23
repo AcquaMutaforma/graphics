@@ -1,5 +1,5 @@
 /*
-g++ 2_interpolation.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 1.5_upside_down_triangle.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -50,7 +50,7 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    Shader ourShader("2_interpolation_shader.vs", "2_interpolation_shader.fs"); // you can name your shader files however you like
+    Shader ourShader("1.5_upside_down.vs", "1.5_upside_down.fs"); // you can name your shader files however you like
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {

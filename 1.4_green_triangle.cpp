@@ -1,5 +1,5 @@
 /*
-g++ 2.2_upside_down_triangle.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 1.4_green_triangle.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -7,6 +7,7 @@ g++ 2.2_upside_down_triangle.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -
 #include "shader_s.h"
 
 #include <iostream>
+#include <cmath>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -50,14 +51,14 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    Shader ourShader("2.2_upside_down.vs", "2_interpolation_shader.fs"); // you can name your shader files however you like
+    Shader ourShader("1.4_green_triangle.vs", "1.4_green_triangle.fs"); // you can name your shader files however you like
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
         // positions         // colors
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+         0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+         0.0f,  0.5f, 0.0f,  // top 
     };
 
     unsigned int VBO, VAO;
@@ -70,11 +71,8 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
@@ -94,9 +92,15 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // render the triangle
         ourShader.use();
-        glBindVertexArray(VAO);
+
+        //ourShader.setFloat("green", 1.0f);
+
+        double  timeValue = glfwGetTime();
+        float greenValue = static_cast<float>(sin(timeValue) / 2.0 + 0.5);
+        ourShader.setFloat("green", greenValue);
+
+        // render the triangle
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -132,5 +136,3 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
-
-

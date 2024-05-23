@@ -1,5 +1,5 @@
 /*
-g++ 2.3_horizontal.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 1.3_shader_class.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -7,7 +7,6 @@ g++ 2.3_horizontal.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpth
 #include "shader_s.h"
 
 #include <iostream>
-#include <cmath>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -51,14 +50,14 @@ int main()
 
     // build and compile our shader program
     // ------------------------------------
-    Shader ourShader("2.3_horizontal.vs", "2.3_horizontal.fs"); // you can name your shader files however you like
+    Shader ourShader("1.3_shader_class.vs", "1.3_shader_class.fs"); // you can name your shader files however you like
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
         // positions         // colors
-         0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
+         0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-         0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+         0.0f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f   // top 
     };
 
     unsigned int VBO, VAO;
@@ -95,14 +94,9 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-
-        float mov = static_cast<float>(sin(glfwGetTime()) );
-        ourShader.setFloat("mov", mov);
+        ourShader.use();
 
         // render the triangle
-        ourShader.use();
-        glBindVertexArray(VAO);
-        
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -138,5 +132,3 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
-
-
