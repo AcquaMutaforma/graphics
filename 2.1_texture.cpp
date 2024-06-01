@@ -1,5 +1,5 @@
 /*
-g++ 3.2_texture.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 2.1_texture.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 
 #include <glad/glad.h>
@@ -17,8 +17,6 @@ void processInput(GLFWwindow *window);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-
-float perc = 0.0;
 
 int main()
 {
@@ -55,7 +53,7 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("3_texture_shader.vs", "3.2_texture_shader.fs");
+    Shader ourShader("2.1_texture.vs", "2.1_texture.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -96,7 +94,7 @@ int main()
 
     // load and create a texture 
     // -------------------------
-    unsigned int texture1, texture2;
+    unsigned int texture1;
     // texture 1
     // ---------
     glGenTextures(1, &texture1);
@@ -122,29 +120,6 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
-    // texture 2
-    // ---------
-    glGenTextures(1, &texture2);
-    glBindTexture(GL_TEXTURE_2D, texture2);
-    // set the texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load image, create texture and generate mipmaps
-    data = stbi_load("awesomeface.png", &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
 
     // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
     // -------------------------------------------------------------------------------------------
@@ -152,7 +127,7 @@ int main()
     // either set it manually like so:
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     // or set it via the texture class
-    ourShader.setInt("texture2", 1);
+
 
     // render loop
     // -----------
@@ -170,10 +145,6 @@ int main()
         // bind textures on corresponding texture units
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
-
-        ourShader.setFloat("percentuale", perc);
 
         // render container
         ourShader.use();
@@ -204,16 +175,6 @@ void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
-        if(perc < 1.0)
-            perc = perc + 0.1;
-    }
-
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
-        if(perc > 0.0)
-            perc = perc - 0.1;
-    }
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

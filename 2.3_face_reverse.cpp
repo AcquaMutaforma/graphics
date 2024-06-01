@@ -1,5 +1,5 @@
 /*
-g++ 3_texture.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 2.3_face_reverse.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 
 #include <glad/glad.h>
@@ -53,7 +53,7 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("3_texture_shader.vs", "3_texture_shader.fs");
+    Shader ourShader("2.3_face_reverse.vs", "2.3_face_reverse.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -153,7 +153,7 @@ int main()
     ourShader.setInt("texture2", 1);
 
 
-
+    float xAxis = 1.0f;
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
