@@ -1,5 +1,5 @@
 /*
-g++ 3.4_camera.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 3.4_profondita.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 
 #include <glad/glad.h>
@@ -56,7 +56,7 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-    Shader ourShader("3.4_camera.vs", "3.4_camera.fs");
+    Shader ourShader("3.4_profondita.vs", "3.4_profondita.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
