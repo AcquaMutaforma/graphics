@@ -1,5 +1,5 @@
 /*
-g++ 4.6_directional_lux.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+g++ 4.7_directional_many_objs.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
 
 #include <glad/glad.h>
@@ -35,9 +35,6 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
-// lighting
-glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
 {
@@ -81,9 +78,9 @@ int main()
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
-    // build and compile our shader zprogram
-    // ------------------------------------
-    Shader lightingShader("4.6_directional_lux.vs", "4.6_directional_lux.fs");
+    // build and compile shaders
+    // -------------------------
+    Shader lightingShader("4.7_directional_many_objs.vs", "4.7_directional_many_objs.fs");
     Shader lightCubeShader("4.1_light_cube.vs", "4.1_light_cube.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -132,6 +129,19 @@ int main()
         -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
+    // positions all containers
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f),
+        glm::vec3( 2.0f,  5.0f, -15.0f),
+        glm::vec3(-1.5f, -2.2f, -2.5f),
+        glm::vec3(-3.8f, -2.0f, -12.3f),
+        glm::vec3( 2.4f, -0.4f, -3.5f),
+        glm::vec3(-1.7f,  3.0f, -7.5f),
+        glm::vec3( 1.3f, -2.0f, -2.5f),
+        glm::vec3( 1.5f,  2.0f, -2.5f),
+        glm::vec3( 1.5f,  0.2f, -1.5f),
+        glm::vec3(-1.3f,  1.0f, -1.5f)
+    };
     // first, configure the cube's VAO (and VBO)
     unsigned int VBO, cubeVAO;
     glGenVertexArrays(1, &cubeVAO);
@@ -162,7 +172,7 @@ int main()
     // -----------------------------------------------------------------------------
     unsigned int diffuseMap = loadTexture("container2.png");
     unsigned int specularMap = loadTexture("container2_specular.png");
-
+    
     // shader configuration
     // --------------------
     lightingShader.use();
@@ -200,7 +210,7 @@ int main()
         lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
         // material properties
-        lightingShader.setFloat("material.shininess", 64.0f);
+        lightingShader.setFloat("material.shininess", 32.0f);
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -220,21 +230,35 @@ int main()
         glBindTexture(GL_TEXTURE_2D, specularMap);
 
         // render the cube
+        // glBindVertexArray(cubeVAO);
+        // glDrawArrays(GL_TRIANGLES, 0, 36);*/
+
+        // render containers
         glBindVertexArray(cubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        for (unsigned int i = 0; i < 10; i++)
+        {
+            // calculate the model matrix for each object and pass it to shader before drawing
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            float angle = 20.0f * i;
+            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+            lightingShader.setMat4("model", model);
+
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
 
 
-        /* also draw the lamp object
-        lightCubeShader.use();
-        lightCubeShader.setMat4("projection", projection);
-        lightCubeShader.setMat4("view", view);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-        lightCubeShader.setMat4("model", model);
+        // a lamp object is weird when we only have a directional light, don't render the light object
+        // lightCubeShader.use();
+        // lightCubeShader.setMat4("projection", projection);
+        // lightCubeShader.setMat4("view", view);
+        // model = glm::mat4(1.0f);
+        // model = glm::translate(model, lightPos);
+        // model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+        // lightCubeShader.setMat4("model", model);
 
-        glBindVertexArray(lightCubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);*/
+        // glBindVertexArray(lightCubeVAO);
+        // glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -281,13 +305,13 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
     float xpos = static_cast<float>(xposIn);
     float ypos = static_cast<float>(yposIn);
-
     if (firstMouse)
     {
         lastX = xpos;
