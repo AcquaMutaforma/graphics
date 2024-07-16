@@ -1,0 +1,47 @@
+# SI
+1.1 ex1 triangolo verde con uniform			
+1.2 ex2 interpolation RGB
+1.3 ex3 shader class (?)
+1.4 h1 green triangolo lampeggiante
+1.5 h2 upside down interpolation
+1.6 h3 interpolation con movimento su x
+1.7 h4 fragment position
+
+# texture
+2.1 ex1 texture application
+2.2 ex2 texture mix
+2.3 h1 face reverse (dx / sx )
+2.4 h2 yes
+2.5 h3 arrowUP - arrowDOWN (come me)
+
+# translations
+3.1 ex1 container-faccia rotante over time in basso a dx
+3.2 ex2 invertire ordine di translazione e rotazione
+3.3 ex3 aggiungo un altro quadrato
+3.4 ex4 profondita, proiezione con profondità (transformationOpenGL slide 18/28)
+3.5 ex5 cubo rotante
+3.6 ex6 molti cubi con orientazione e posizione differenti
+3.7 ex6.2 aggiungi rotazione ad ogni cubo
+3.8 ex7 aggiungi camera view
+3.9 ex8 gestione camera con freccette
+
+# Lighting
+4.1 ex1 muovere la luce nella scena (sin cos) (s24)
+4.2 ex2 Do Phong shading in view space instead of world space (s25)
+4.3 ex3 Implement Gouraud shading instead of Phong shading (s26)
+4.4 ex4 change the light’s colors over time 
+4.5 hw1 Try inverting the color of the specular map in the FS (s45)
+4.6 hw2 directional light
+4.7 hw3 directional light many objs
+4.8 hw4 attenuation effect by distance ( point-light)
+4.9 hw5 multiple lights
+
+# Meshes (ultime slides)
+5.1 load the mesh
+5.2 mesh + light
+
+# Animation
+6.1 Last slide
+
+0x3f
+
