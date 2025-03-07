@@ -40,6 +40,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+glm::vec3 lightPos2(1.2f, 1.0f, -2.0f);
 
 int main()
 {
@@ -88,7 +89,7 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    Shader ourShader("5.2_mesh_light.vs", "5.2_mesh_light.fs");
+    Shader ourShader("7.1_additional.vs", "7.1_additional.fs");
     Shader lightCubeShader("4.1_light_cube.vs", "4.1_light_cube.fs");
 
     // load models
@@ -164,12 +165,17 @@ int main()
     ourShader.setInt("material.diffuse", 0);
     ourShader.setInt("material.specular", 1);
 
-    ourShader.setFloat("light.constant",  1.0f);
-    ourShader.setFloat("light.linear",    0.09f);
-    ourShader.setFloat("light.quadratic", 0.032f);	
+    ourShader.setFloat("light1.constant",  1.0f);
+    ourShader.setFloat("light1.linear",    0.09f);
+    ourShader.setFloat("light1.quadratic", 0.032f);
+
+    ourShader.setFloat("light2.constant",  1.0f);
+    ourShader.setFloat("light2.linear",    0.09f);
+    ourShader.setFloat("light2.quadratic", 0.032f);	
 
     // render loop
     // -----------
+    float radianti = 0.0f;
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
@@ -189,13 +195,18 @@ int main()
 
         // don't forget to enable shader before setting uniforms
         ourShader.use();
-        ourShader.setVec3("light.position", lightPos);
+        ourShader.setVec3("light1.position", lightPos);
+        ourShader.setVec3("light2.position", lightPos2);
         ourShader.setVec3("viewPos", camera.Position);
 
         // light properties
-        ourShader.setVec3("light.ambient", 0.1f, 0.1f, 0.1f);
-        ourShader.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-        ourShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+        ourShader.setVec3("light1.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("light1.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader.setVec3("light1.specular", 1.0f, 1.0f, 1.0f);
+
+        ourShader.setVec3("light2.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("light2.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader.setVec3("light2.specular", 1.0f, 1.0f, 1.0f);
 
         // material properties
         ourShader.setFloat("material.shininess", 32.0f);
@@ -222,17 +233,20 @@ int main()
         
         // my cube 1
         model = glm::mat4(1.0f);
+        //todo add rotate
         model = glm::translate(model, lightPos);
         model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
         lightCubeShader.setMat4("model", model);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //my cube 2
-        // model = glm::mat4(1.0f);
-        // model = glm::translate(model, lightPos);
-        // model = glm::scale(model, glm::vec3(0.2f));
-        // lightCubeShader.setMat4("model", model);
-        // glDrawArrays(GL_TRIANGLES, 0, 36);
+        model = glm::mat4(1.0f);
+        // modify radianti (funzione per spostare >360 -> 0)
+        // model = glm::rotate(model, glm::radians(radianti), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate 45 degrees around the Y-axis
+        model = glm::translate(model, lightPos2);
+        model = glm::scale(model, glm::vec3(0.2f));
+        lightCubeShader.setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
