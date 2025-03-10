@@ -40,7 +40,7 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-glm::vec3 lightPos2(1.2f, 1.0f, -2.0f);
+glm::vec3 lightPos2(1.2f, 0.0f, -2.0f);
 
 int main()
 {
@@ -196,6 +196,13 @@ int main()
         // don't forget to enable shader before setting uniforms
         ourShader.use();
         ourShader.setVec3("light1.position", lightPos);
+        // ===== UPDATE POSITION 2 ====
+        glm::mat4 model2 = glm::mat4(1.0f);
+        model2 = glm::rotate(model2, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate 45 degrees around the Y-axis
+        model2 = glm::translate(model2, lightPos2);
+        model2 = glm::scale(model2, glm::vec3(0.2f));
+        lightPos2 = glm::vec3(model2[3]); //update value
+        // =============================
         ourShader.setVec3("light2.position", lightPos2);
         ourShader.setVec3("viewPos", camera.Position);
 
@@ -224,7 +231,6 @@ int main()
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
 
-        
         glBindVertexArray(lightCubeVAO);
 
         lightCubeShader.use();
@@ -240,12 +246,7 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         //my cube 2
-        model = glm::mat4(1.0f);
-        // modify radianti (funzione per spostare >360 -> 0)
-        // model = glm::rotate(model, glm::radians(radianti), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate 45 degrees around the Y-axis
-        model = glm::translate(model, lightPos2);
-        model = glm::scale(model, glm::vec3(0.2f));
-        lightCubeShader.setMat4("model", model);
+        lightCubeShader.setMat4("model", model2);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
