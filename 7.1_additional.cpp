@@ -30,7 +30,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 2.0f, 4.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -41,6 +41,7 @@ float lastFrame = 0.0f;
 
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 glm::vec3 lightPos2(1.2f, 0.0f, -2.0f);
+glm::vec3 lightPos3(0.0f, -0.5f, 2.4f);
 
 int main()
 {
@@ -90,7 +91,7 @@ int main()
     // build and compile shaders
     // -------------------------
     Shader ourShader("7.1_additional.vs", "7.1_additional.fs");
-    Shader lightCubeShader("4.1_light_cube.vs", "4.1_light_cube.fs");
+    Shader lightCubeShader("7.1_light_cube.vs", "7.1_light_cube.fs");
 
     // load models
     // -----------
@@ -162,6 +163,7 @@ int main()
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     ourShader.use();
+
     ourShader.setInt("material.diffuse", 0);
     ourShader.setInt("material.specular", 1);
 
@@ -172,6 +174,10 @@ int main()
     ourShader.setFloat("light2.constant",  1.0f);
     ourShader.setFloat("light2.linear",    0.09f);
     ourShader.setFloat("light2.quadratic", 0.032f);	
+
+    ourShader.setFloat("light3.constant",  1.0f);
+    ourShader.setFloat("light3.linear",    0.09f);
+    ourShader.setFloat("light3.quadratic", 0.032f);	
 
     // render loop
     // -----------
@@ -185,25 +191,32 @@ int main()
         lastFrame = currentFrame;
 
         // input
-        // -----
         processInput(window);
 
         // render
-        // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // don't forget to enable shader before setting uniforms
         ourShader.use();
         ourShader.setVec3("light1.position", lightPos);
-        // ===== UPDATE POSITION 2 ====
+
+        // ===== UPDATE POSITION 2 & 3====
         glm::mat4 model2 = glm::mat4(1.0f);
         model2 = glm::rotate(model2, glm::radians(1.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate 45 degrees around the Y-axis
         model2 = glm::translate(model2, lightPos2);
         model2 = glm::scale(model2, glm::vec3(0.2f));
         lightPos2 = glm::vec3(model2[3]); //update value
+
+        glm::mat4 model3 = glm::mat4(1.0f);
+        model3 = glm::rotate(model3, glm::radians(2.0f), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate 45 degrees around the Y-axis
+        model3 = glm::translate(model3, lightPos3);
+        model3 = glm::scale(model3, glm::vec3(0.2f));
+        lightPos3 = glm::vec3(model3[3]); //update value
         // =============================
+
         ourShader.setVec3("light2.position", lightPos2);
+        ourShader.setVec3("light3.position", lightPos3);
         ourShader.setVec3("viewPos", camera.Position);
 
         // light properties
@@ -214,6 +227,10 @@ int main()
         ourShader.setVec3("light2.ambient", 0.1f, 0.1f, 0.1f);
         ourShader.setVec3("light2.diffuse", 0.5f, 0.5f, 0.5f);
         ourShader.setVec3("light2.specular", 1.0f, 1.0f, 1.0f);
+
+        ourShader.setVec3("light3.ambient", 0.1f, 0.1f, 0.1f);
+        ourShader.setVec3("light3.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader.setVec3("light3.specular", 1.0f, 1.0f, 1.0f);
 
         // material properties
         ourShader.setFloat("material.shininess", 32.0f);
@@ -247,6 +264,10 @@ int main()
 
         //my cube 2
         lightCubeShader.setMat4("model", model2);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        
+        //my cube 3
+        lightCubeShader.setMat4("model", model3);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)

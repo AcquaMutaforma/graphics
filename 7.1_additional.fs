@@ -30,6 +30,7 @@ uniform vec3 viewPos;
 uniform Material material;
 uniform Light light1;
 uniform Light light2;
+uniform Light light3;
 
 vec3 MyCalcolaLuce(Light light, vec3 normal, vec3 viewDir);
 
@@ -57,6 +58,7 @@ void main()
     
     vec3 result = MyCalcolaLuce(light1, norm, viewDir);
     result+= MyCalcolaLuce(light2, norm, viewDir);
+    result+= MyCalcolaLuce(light3, norm, viewDir);
     FragColor = texture(texture_diffuse1, TexCoords) * vec4(result, 1.0);
 }
 
