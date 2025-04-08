@@ -126,7 +126,6 @@ int main()
     unsigned int woodTexture = loadTexture("./wood.png");
 
     // configure depth map FBO
-    // -----------------------
     const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
     unsigned int depthMapFBO;
     glGenFramebuffers(1, &depthMapFBO);

@@ -16,7 +16,8 @@ uniform vec3 viewPos;
 
 float ShadowCalculation(vec4 fragPosLightSpace)
 {
-    // perform perspective divide
+    // perform perspective divide: transform clip-space coordinates in the range [-w,w] to [-1,1] 
+    //by dividing the x, y and z component by the vector's w component
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
@@ -24,6 +25,8 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     float closestDepth = texture(shadowMap, projCoords.xy).r; 
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
+    return currentDepth > closestDepth  ? 1.0 : 0.0;  
+
     
     // Bias
     vec3 normal = normalize(fs_in.Normal);
