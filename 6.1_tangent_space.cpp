@@ -4,8 +4,8 @@ g++ 6.1_tangent_space.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -l
 
 /*#ifndef STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
-#endif
-#include "stb_image.h"*/
+#endif*/
+#include "stb_image.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -14,7 +14,7 @@ g++ 6.1_tangent_space.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -l
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "shader.h"
+#include "learnopengl/shader.h"
 #include "camera.h"
 #include "model.h"
 
@@ -89,8 +89,8 @@ int main()
 
     // load textures
     // -------------
-    unsigned int diffuseMap = loadTexture("resources/textures/brickwall.jpg");
-    unsigned int normalMap  = loadTexture("resources/textures/brickwall_normal.jpg");
+    unsigned int diffuseMap = loadTexture("brickwall.jpg");
+    unsigned int normalMap  = loadTexture("brickwall_normal.jpg");
 
     // shader configuration
     // --------------------
