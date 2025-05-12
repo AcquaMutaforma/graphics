@@ -8,7 +8,7 @@ uniform float mov;
 void main()
 {
     gl_Position = vec4(aPos.x + mov, aPos.y, aPos.z, 1.0);
-    ourColor = vec3(aPos.x + mov, aPos.y, aPos.z);
+    ourColor = vec3(mov + aPos.x, aPos.y - mov, aPos.z);
 }
 
 
