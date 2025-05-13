@@ -51,12 +51,9 @@ int main()
         return -1;
     }
 
-    // build and compile our shader zprogram
-    // ------------------------------------
     Shader ourShader("2.2_texture_mix.vs", "2.2_texture_mix.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
     float vertices[] = {
         // positions          // colors           // texture coords
          0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right

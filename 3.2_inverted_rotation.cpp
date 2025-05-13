@@ -54,12 +54,8 @@ int main()
         return -1;
     }
 
-    // build and compile our shader zprogram
-    // ------------------------------------
     Shader ourShader("3.2_inverted_rotation.vs", "3.2_inverted_rotation.fs");
 
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
     float vertices[] = {
         // positions          // texture coords
          0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // top right

@@ -184,17 +184,16 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         //0x3f
-        transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-        transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
+        glm::mat4 transform2 = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        transform2 = glm::translate(transform2, glm::vec3(-0.5f, 0.5f, 0.0f));
         float scaleAmount = static_cast<float>(sin(glfwGetTime()));
-        transform = glm::scale(transform, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &transform[0][0]);
+        transform2 = glm::scale(transform2, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &transform2[0][0]);
 
         // get matrix's uniform location and set matrix
         transformLoc = glGetUniformLocation(ourShader.ID, "transform");
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-
-        // render container
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform2));
+        // DRAW
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
