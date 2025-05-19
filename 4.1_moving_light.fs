@@ -3,8 +3,8 @@ out vec4 FragColor;
 
 in vec3 Normal; 
 in vec3 FragPos;
-  
 uniform vec3 lightPos;
+
 uniform vec3 viewPos; //posizione della camera
 uniform vec3 lightColor;
 uniform vec3 objectColor;
@@ -12,7 +12,7 @@ uniform vec3 objectColor;
 void main()
 {
     // ambiente
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.4;
     vec3 ambient = ambientStrength * lightColor;
 
     // diffusa

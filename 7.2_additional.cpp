@@ -1,20 +1,16 @@
 /*
-g++ 7.2_additional.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lassimp
+g++ 7.2_additional.cpp ./glad/glad.c -I. -o compiledFile -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
 */
-
-/*#ifndef STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#endif
-#include "stb_image.h"*/
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+// #include "stb_image.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "shader_m.h"
+#include "learnopengl/shader.h"
 #include "camera.h"
 #include "model.h"
 
@@ -95,7 +91,6 @@ int main()
     Shader debugDepthQuad("7.2_debug_quad.vs", "7.2_debug_quad.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
     float planeVertices[] = {
         // positions            // normals         // texcoords
          25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
@@ -122,7 +117,6 @@ int main()
     glBindVertexArray(0);
 
     // load textures
-    // -------------
     unsigned int woodTexture = loadTexture("./wood.png");
 
     // configure depth map FBO
@@ -150,7 +144,6 @@ int main()
 
 
     // shader configuration
-    // --------------------
     shader.use();
     shader.setInt("diffuseTexture", 0);
     shader.setInt("shadowMap", 1);
@@ -158,30 +151,21 @@ int main()
     debugDepthQuad.setInt("depthMap", 0);
 
     // lighting info
-    // -------------
     glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
 
-    // render loop
-    // -----------
     while (!glfwWindowShouldClose(window))
     {
-        // per-frame time logic
-        // --------------------
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
         // input
-        // -----
         processInput(window);
 
-        // render
-        // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // 1. render depth of scene to texture (from light's perspective)
-        // --------------------------------------------------------------
         glm::mat4 lightProjection, lightView;
         glm::mat4 lightSpaceMatrix;
         float near_plane = 1.0f, far_plane = 7.5f;

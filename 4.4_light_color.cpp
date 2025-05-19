@@ -83,7 +83,7 @@ int main()
     // build and compile our shader zprogram
     // ------------------------------------
     Shader lightingShader("4.4_light_color.vs", "4.4_light_color.fs");
-    Shader lightCubeShader("4.1_light_cube.vs", "4.1_light_cube.fs");
+    Shader lightCubeShader("4.1_light_cube.vs", "4.1_light_cube_2.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -216,6 +216,7 @@ int main()
 
         // also draw the lamp object
         lightCubeShader.use();
+        lightCubeShader.setVec3("color", lightColor);
         lightCubeShader.setMat4("projection", projection);
         lightCubeShader.setMat4("view", view);
         model = glm::mat4(1.0f);

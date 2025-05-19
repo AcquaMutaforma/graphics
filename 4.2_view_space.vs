@@ -5,8 +5,9 @@ layout (location = 1) in vec3 aNormal;
 out vec3 FragPos;
 out vec3 Normal;
 out vec3 LightPos;
-
-uniform vec3 lightPos; // we now define the uniform in the vertex shader and pass the 'view space' lightpos to the fragment shader. lightPos is currently in world space.
+// we now define the uniform in the vertex shader and pass the 'view space' lightpos 
+//to the fragment shader. lightPos is currently in world space.
+uniform vec3 lightPos; 
 
 uniform mat4 model;
 uniform mat4 view;
