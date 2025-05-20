@@ -88,7 +88,7 @@ int main()
     // -------------------------
     Shader shader("7.2_additional.vs", "7.2_additional.fs");
     Shader simpleDepthShader("7.2_shadow_map.vs", "7.2_shadow_map.fs");
-    Shader debugDepthQuad("7.2_debug_quad.vs", "7.2_debug_quad.fs");
+    // Shader debugDepthQuad("7.2_debug_quad.vs", "7.2_debug_quad.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float planeVertices[] = {
@@ -147,8 +147,8 @@ int main()
     shader.use();
     shader.setInt("diffuseTexture", 0);
     shader.setInt("shadowMap", 1);
-    debugDepthQuad.use();
-    debugDepthQuad.setInt("depthMap", 0);
+    // debugDepthQuad.use();
+    // debugDepthQuad.setInt("depthMap", 0);
 
     // lighting info
     glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
@@ -178,10 +178,10 @@ int main()
 
         glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-            glClear(GL_DEPTH_BUFFER_BIT);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, woodTexture);
-            renderScene(simpleDepthShader);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, woodTexture);
+        renderScene(simpleDepthShader);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         // reset viewport
@@ -207,11 +207,11 @@ int main()
 
         // render Depth map to quad for visual debugging
         // ---------------------------------------------
-        debugDepthQuad.use();
-        debugDepthQuad.setFloat("near_plane", near_plane);
-        debugDepthQuad.setFloat("far_plane", far_plane);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, depthMap);
+        // debugDepthQuad.use();
+        // debugDepthQuad.setFloat("near_plane", near_plane);
+        // debugDepthQuad.setFloat("far_plane", far_plane);
+        // glActiveTexture(GL_TEXTURE0);
+        // glBindTexture(GL_TEXTURE_2D, depthMap);
         //renderQuad();
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -230,7 +230,6 @@ int main()
 }
 
 // renders the 3D scene
-// --------------------
 void renderScene(const Shader &shader)
 {
     // floor
@@ -335,34 +334,34 @@ void renderCube()
 
 // renderQuad() renders a 1x1 XY quad in NDC
 // -----------------------------------------
-unsigned int quadVAO = 0;
-unsigned int quadVBO;
-void renderQuad()
-{
-    if (quadVAO == 0)
-    {
-        float quadVertices[] = {
-            // positions        // texture Coords
-            -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-             1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-             1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-        };
-        // setup plane VAO
-        glGenVertexArrays(1, &quadVAO);
-        glGenBuffers(1, &quadVBO);
-        glBindVertexArray(quadVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    }
-    glBindVertexArray(quadVAO);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glBindVertexArray(0);
-}
+// unsigned int quadVAO = 0;
+// unsigned int quadVBO;
+// void renderQuad()
+// {
+//     if (quadVAO == 0)
+//     {
+//         float quadVertices[] = {
+//             // positions        // texture Coords
+//             -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+//             -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+//              1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+//              1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+//         };
+//         // setup plane VAO
+//         glGenVertexArrays(1, &quadVAO);
+//         glGenBuffers(1, &quadVBO);
+//         glBindVertexArray(quadVAO);
+//         glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+//         glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+//         glEnableVertexAttribArray(0);
+//         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+//         glEnableVertexAttribArray(1);
+//         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+//     }
+//     glBindVertexArray(quadVAO);
+//     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//     glBindVertexArray(0);
+// }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
